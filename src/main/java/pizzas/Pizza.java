@@ -2,6 +2,7 @@ package pizzas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Pizza {
 	private List<Ingredient> composition =new ArrayList<>();
@@ -38,7 +39,6 @@ public class Pizza {
 	public Pizza(String nom, float prix){
 		this.nom=nom;
 		this.prix=prix;
-		composition = new ArrayList<Ingredient>();
 	}
 
 
@@ -56,27 +56,33 @@ public class Pizza {
 	public float getPrix() {
 		return prix;
 	}
+@Override
+	public boolean equals(Object o){
+		if(o==null || this.getClass() != o.getClass()){
+				return false;
+		}
+		else{
+			Pizza po= (Pizza)o;
+			return po.getNom() == this.nom && po.getPrix()==this.prix;
+		}
+	}
 
-	public boolean equals(Object o) {
-		Pizza po= (Pizza)o;
-		return nom.equals(po.getNom())&po.getPrix()==prix;
+	@Override
+	public int hashCode() {
+		return Objects.hash(composition, getNom(), getPrix());
 	}
 
 	public void veganize() {
 		nom=nom+" vegan";
-		for (int i=0;i<composition.size();i++) {
-			if (composition.get(i).isVegetarien()!=true) {
-				composition.remove(i);
-			}
-		}
+		composition.removeIf(Ingredient::isVegetarien);
 	}
 	
 	public String formattedIngredients() {
-		String s="";
+		StringBuilder s= new StringBuilder();
 		for (Ingredient ing:composition) {
-			s+=ing.getNom()+" ";
+			s.append(ing.getNom());
 		}
-		return s;
+		return s.toString();
 	}
 	
 	public Ingredient[] ingredients() {

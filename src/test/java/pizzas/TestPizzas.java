@@ -15,12 +15,12 @@ class TestPizzas {
 	}
 	
 	@Test
-	private void testAjoutPizza() {
+	void testAjoutPizza() {
 		Pizza p=new Pizza("fromages", 10);
 		p.ajoutIngredient(new Ingredient("Mozzarelle", true));
 		p.ajoutIngredient(new Ingredient("Talegio", true));
-		
 		base.addPizzaToMenu(p);
+		assertTrue(base.exists("fromages"));
 	}
 	
 	@Test
@@ -29,7 +29,7 @@ class TestPizzas {
 		System.out.println(p.formattedIngredients());
 		var oldSize=p.ingredients().length;
 		p.ajoutIngredient(new Ingredient("brocolis", true));
-		assertTrue(oldSize+1==p.ingredients().length);
+		assertEquals(oldSize+1,p.ingredients().length);
 	}
 
 }
